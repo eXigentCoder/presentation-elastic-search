@@ -49,9 +49,8 @@ async function replace({ _id, item }) {
 	return await service.replace({ _id, item: { ...item, suggest } });
 }
 
-/** @param {import('../../../../admin-web/globals').Manufacturer} manufacturer*/
-function getSuggestions(manufacturer) {
+function getSuggestions(meeting) {
 	let suggestions = [];
-	suggestions = suggestions.concat(tokenizeString(manufacturer.name));
+	suggestions = suggestions.concat(tokenizeString(meeting.subject));
 	return suggestions;
 }
