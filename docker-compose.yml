@@ -1,0 +1,38 @@
+---
+version: '3'
+services:
+ elasticsearch:
+  image: elasticsearch:${ELASTIC_TAG}
+  environment:
+   - http.host=0.0.0.0
+   - transport.host=127.0.0.1
+   - http.port=9200
+   - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+   - ELASTICSEARCH_USERNAME=${ELASTIC_USERNAME}
+   - discovery.type=single-node
+   - http.cors.enabled=true
+   - http.cors.allow-origin=http://localhost:1358,http://127.0.0.1:1358
+   - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+   - http.cors.allow-credentials=true
+  ports: ['${DOCKER_MACHINE_IP}:9200:9200']
+  networks: ['stack']
+ elasticsearchhq:
+  image: elastichq/elasticsearch-hq
+  ports: ['${DOCKER_MACHINE_IP}:5000:5000']
+  environment: ['HQ_DEFAULT_URL=http://${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}@elasticsearch:9200']
+  networks: ['stack']
+ dejavu:
+  image: appbaseio/dejavu
+  ports:
+   - '1358:1358'
+  networks: ['stack']
+  links:
+   - elasticsearch
+ kibana:
+  image: docker.elastic.co/kibana/kibana:${ELASTIC_TAG}
+  environment: ['ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}']
+  ports: ['${DOCKER_MACHINE_IP}:5601:5601']
+  networks: ['stack']
+  depends_on: ['elasticsearch']
+
+networks: { stack: {} }

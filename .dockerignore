@@ -1,0 +1,8 @@
+node_modules
+.editorconfig
+.eslintignore
+.eslintrc.js
+.gitattributes
+.gitignore
+.prettierrc.js
+jest.config.js

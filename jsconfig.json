@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"target": "es2019",
+		"checkJs": true,
+		"moduleResolution": "node",
+		"jsx": "react",
+		"resolveJsonModule": true
+	},
+	"exclude": [],
+	"typeAcquisition": {
+		"include": ["jest"]
+	}
+}
