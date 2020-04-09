@@ -103,7 +103,7 @@ function generateFakePerson() {
 async function populatePeople() {
 	const service = services.people;
 	const promises = [];
-	for (let index = 0; index < faker.random.number({ min: 20, max: 100 }); index++) {
+	for (let index = 0; index < faker.random.number({ min: 100, max: 500 }); index++) {
 		promises.push(
 			service.create({
 				item: generateFakePerson(),

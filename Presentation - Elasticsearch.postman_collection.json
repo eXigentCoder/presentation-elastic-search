@@ -1,0 +1,564 @@
+{
+	"info": {
+		"_postman_id": "a7a82454-8f64-46b2-bf76-851368f5c7a8",
+		"name": "Presentation - Elasticsearch",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "es-direct",
+			"item": [
+				{
+					"name": "Movies",
+					"item": [
+						{
+							"name": "00. Delete movie index",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:9200/movies/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"movies",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "01. Create movie index",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}"
+								},
+								"url": {
+									"raw": "http://localhost:9200/movies/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"movies",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02 - Create movie mapping",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"properties\":{\n\t\t\"id\":{\n\t\t\t\"type\":\"integer\"\n\t\t},\n\t\t\"year\":{\n\t\t\t\"type\":\"date\"\n\t\t},\n\t\t\"genre\":{\n\t\t\t\"type\":\"keyword\"\n\t\t},\n\t\t\"title\":{\n\t\t\t\"type\":\"text\",\n\t\t\t\"analyzer\":\"standard\"\n\t\t}\n\t}\n}"
+								},
+								"url": {
+									"raw": "http://localhost:9200/movies/_mapping",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"movies",
+										"_mapping"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03 - Get movie mapping",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:9200/movies/_mapping",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"movies",
+										"_mapping"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "04. Create Movie - Interstellar",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"genre\":[\"IMAX\",\"Sci-Fi\"],\n\t\"title\" :\"Interstellar\",\n\t\"year\": 2014\n}"
+								},
+								"url": {
+									"raw": "http://localhost:9200/movies/_doc/109487",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"movies",
+										"_doc",
+										"109487"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "05. Get Movie - Interstellar",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"genre\":[\"IMAX\",\"Sci-Fi\"],\n\t\"title\" :\"Interstellar\",\n\t\"year\": 2014\n}"
+								},
+								"url": {
+									"raw": "http://localhost:9200/movies/_doc/109487",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"movies",
+										"_doc",
+										"109487"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "06. Replace Interstellar with new movie",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"genre\":[\"IMAX\",\"Sci-Fi\"],\n\t\"title\" :\"Interstellar Potato\",\n\t\"year\": 2014\n}"
+								},
+								"url": {
+									"raw": "http://localhost:9200/movies/_doc/109487?if_seq_no=4&if_primary_term=2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"movies",
+										"_doc",
+										"109487"
+									],
+									"query": [
+										{
+											"key": "if_seq_no",
+											"value": "4"
+										},
+										{
+											"key": "if_primary_term",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "07 - Delete Movie - Interstellar.",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"genre\":[\"IMAX\",\"Sci-Fi\"],\n\t\"title\" :\"Interstellar\",\n\t\"year\": 2014\n}"
+								},
+								"url": {
+									"raw": "http://localhost:9200/movies/_doc/109487",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"movies",
+										"_doc",
+										"109487"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "08 - Create a few of Movies at once",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"create\" : { \"_index\" : \"movies\", \"_id\" : \"135569\" } }\r\n{ \"id\": \"135569\", \"title\" : \"Star Trek Beyond\", \"year\":2016 , \"genre\":[\"Action\", \"Adventure\", \"Sci-Fi\"] }\r\n{ \"create\" : { \"_index\" : \"movies\", \"_id\" : \"122886\" } }\r\n{ \"id\": \"122886\", \"title\" : \"Star Wars: Episode VII - The Force Awakens\", \"year\":2015 , \"genre\":[\"Action\", \"Adventure\", \"Fantasy\", \"Sci-Fi\", \"IMAX\"] }\r\n{ \"create\" : { \"_index\" : \"movies\", \"_id\" : \"109487\" } }\r\n{ \"id\": \"109487\", \"title\" : \"Interstellar\", \"year\":2014 , \"genre\":[\"Sci-Fi\", \"IMAX\"] }\r\n{ \"create\" : { \"_index\" : \"movies\", \"_id\" : \"58559\" } }\r\n{ \"id\": \"58559\", \"title\" : \"Dark Knight, The\", \"year\":2008 , \"genre\":[\"Action\", \"Crime\", \"Drama\", \"IMAX\"] }\r\n{ \"create\" : { \"_index\" : \"movies\", \"_id\" : \"1924\" } }\r\n{ \"id\": \"1924\", \"title\" : \"Plan 9 from Outer Space\", \"year\":1959 , \"genre\":[\"Horror\", \"Sci-Fi\"] }\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9200/_bulk?pretty",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"_bulk"
+									],
+									"query": [
+										{
+											"key": "pretty",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "09 - Get Movies, Paging, Sorting",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"from\" : 0, \n\t\"size\" : 10,\n    \"sort\" : [\n        { \"year\" : {\"order\" : \"asc\"}}\n    ]\n}"
+								},
+								"url": {
+									"raw": "http://localhost:9200/movies/_search",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"movies",
+										"_search"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "10 - Get Movies with \"Star\" in title",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"from\" : 0, \n\t\"size\" : 10,\n    \"sort\" : [\n        { \"year\" : {\"order\" : \"asc\"}}\n    ],\n    \"query\" : {\n        \"term\" : { \"title\" : \"star\" }\n    }\n}"
+								},
+								"url": {
+									"raw": "http://localhost:9200/movies/_search",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"movies",
+										"_search"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "10 - Get Sci-Fi Movies",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"from\" : 0, \n\t\"size\" : 10,\n    \"sort\" : [\n        { \"year\" : {\"order\" : \"asc\"}}\n    ],\n    \"query\" : {\n        \"term\" : { \"genre\" : \"Sci-Fi\" }\n    }\n}"
+								},
+								"url": {
+									"raw": "http://localhost:9200/movies/_search",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"movies",
+										"_search"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "11 - Get Movies with \"Star\" in title and highlight result",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"from\" : 0, \n\t\"size\" : 10,\n    \"query\" : {\n        \"match\" : { \"title\" : \"star\" }\n    },\n    \"highlight\" : {\n        \"fields\" : {\n            \"title\" : {}\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "http://localhost:9200/movies/_search",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"movies",
+										"_search"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Cluster Health",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "changeme",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "elastic",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:9200",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Indecies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic ZWxhc3RpYzpjaGFuZ2VtZQ=="
+							}
+						],
+						"url": {
+							"raw": "http://localhost:9200/_cat/indices?v",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"_cat",
+								"indices"
+							],
+							"query": [
+								{
+									"key": "v",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "node-api",
+			"item": [
+				{
+					"name": "01 - Search People",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3123/people?skip=0&take=10&firstName=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3123",
+							"path": [
+								"people"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								},
+								{
+									"key": "firstName",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02 - Autocomplete People",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3123/people/autocomplete?prefix=will",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3123",
+							"path": [
+								"people",
+								"autocomplete"
+							],
+							"query": [
+								{
+									"key": "prefix",
+									"value": "will"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
