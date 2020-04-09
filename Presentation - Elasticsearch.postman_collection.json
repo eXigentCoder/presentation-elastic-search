@@ -555,6 +555,65 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "03 - Search meetings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3123/meetings?skip=0&take=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3123",
+							"path": [
+								"meetings"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "take",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04 - Search meetings - Autocomplete",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3123/meetings/autocomplete?fuzz=1&prefix=impactful",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3123",
+							"path": [
+								"meetings",
+								"autocomplete"
+							],
+							"query": [
+								{
+									"key": "fuzz",
+									"value": "1"
+								},
+								{
+									"key": "prefix",
+									"value": "impactful"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}

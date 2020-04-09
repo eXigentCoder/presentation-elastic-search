@@ -7,7 +7,10 @@ const asyncHandler = require('express-async-handler');
 router.get(
 	'/autocomplete',
 	asyncHandler(async function(req, res) {
-		const suggestions = await autocomplete({ prefix: req.query.prefix });
+		const suggestions = await autocomplete({
+			prefix: req.query.prefix,
+			fuzziness: Number(req.query.fuzz),
+		});
 		res.json(suggestions);
 	}),
 );

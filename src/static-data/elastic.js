@@ -8,6 +8,7 @@ const services = {
 	meetings: require('../domain/meetings/service'),
 	people: require('../domain/people/service'),
 };
+const moment = require('moment');
 
 module.exports = { createElasticStaticData };
 
@@ -95,18 +96,29 @@ function generateFakePerson() {
 			lat: faker.address.latitude(),
 			lon: faker.address.longitude(),
 		},
-		salary: faker.random.number({ min: 1000, max: 99999 }),
+		salary: faker.random.number({ min: 5080, max: 10500 }),
 		dateOfBirth: faker.date.between('1960-01-01', '2002-01-01'),
 	};
 }
 
 // TODO: Isn't fake redundant when referring to meetings?
 function generateFakeMeeting() {
-	return {
+	const meeting = {
 		subject: faker.company.bs(),
 		startDate: faker.date.between('2020-01-01', '2020-04-09'),
-		attendees: state.people.slice(faker.random.number({ min: 1, max: state.people.length })),
 	};
+	meeting.endDate = moment(meeting.startDate)
+		.add(faker.random.number({ min: 15, max: 90 }), 'minutes')
+		.toDate();
+	meeting.durationMinutes = moment(meeting.endDate).diff(meeting.startDate, 'minutes');
+	const attendees = state.people.slice(0, faker.random.number({ min: 1, max: 8 }));
+	meeting.costUSD = attendees.reduce((total, attendee) => {
+		const attendeeMeetingCost = (attendee.salary / 22.5 / 8 / 60) * meeting.durationMinutes;
+		return total + attendeeMeetingCost;
+	}, 0);
+	meeting.costZAR = meeting.costUSD * 17.93;
+	meeting.attendees = attendees;
+	return meeting;
 }
 
 async function populatePeople() {
