@@ -1,7 +1,7 @@
 'use strict';
 
 const { elasticClient } = require('./');
-const { omit } = require('lodash');
+const { omit, get: _get } = require('lodash');
 
 module.exports = function createService({ index, suggestFieldName = 'suggest' }) {
 	async function ensureIndexDeleted() {
@@ -121,20 +121,23 @@ module.exports = function createService({ index, suggestFieldName = 'suggest' })
 
 	async function search({ searchBody = {} } = {}) {
 		const { skip = 0, take = 25 } = searchBody;
-		let body = {
-			query: {
-				bool: {
-					must: [],
-				},
-			},
-		};
+
 		const must = [];
-		Object.entries(omit(searchBody, 'skip', 'take')).forEach(([key, value]) => {
+		const restOfBody = omit(searchBody, 'skip', 'take');
+		Object.keys(restOfBody).forEach((key) => {
+			const value = _get(restOfBody, key);
 			if (!key || !value) {
 				return;
 			}
 			must.push({ term: { [key]: value } });
 		});
+		let body = {
+			query: {
+				bool: {
+					must,
+				},
+			},
+		};
 		const res = await elasticClient().search({
 			index,
 			from: skip,
