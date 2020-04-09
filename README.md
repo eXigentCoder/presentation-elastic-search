@@ -13,5 +13,6 @@
 - Versioning of documents for concurrency
 - CRUD operations from within node
 - Creating a map of people by location in Kibana.
+- Time series data
 - Editing/importing data with dejavu.
 - ElasticHQ - cluster stats (Size, health etc)

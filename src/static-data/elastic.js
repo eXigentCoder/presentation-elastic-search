@@ -2,6 +2,7 @@
 
 const util = require('util');
 const { elasticClient } = require('../elasticsearch');
+const faker = require('faker');
 
 const services = {
 	meetings: require('../domain/meetings/service'),
@@ -86,18 +87,30 @@ function wait(milliseconds) {
 		setTimeout(resolve, milliseconds);
 	});
 }
-// See https://plus.codes/ to convert from google maps to lat/long
+function generateFakePerson() {
+	return {
+		firstName: faker.name.firstName(),
+		lastName: faker.name.lastName(),
+		location: {
+			lat: faker.address.latitude(),
+			lon: faker.address.longitude(),
+		},
+		salary: faker.random.number({ min: 1000, max: 99999 }),
+		dateOfBirth: faker.date.between('1960-01-01', '2002-01-01'),
+	};
+}
+
 async function populatePeople() {
 	const service = services.people;
-	state.people.bob = await service.create({
-		item: {
-			firstName: 'Bob',
-			lastName: 'Bobson',
-			location: '-26.16,28.08',
-			salary: 123.45,
-			dateOfBirth: new Date('1985-01-01'),
-		},
-	});
+	const promises = [];
+	for (let index = 0; index < faker.random.number({ min: 20, max: 100 }); index++) {
+		promises.push(
+			service.create({
+				item: generateFakePerson(),
+			}),
+		);
+	}
+	state.people = await Promise.all(promises);
 	await service.refresh();
 }
 
