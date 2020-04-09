@@ -1,4 +1,5 @@
 'use strict';
+
 const util = require('util');
 const { elasticClient } = require('../elasticsearch');
 
@@ -88,15 +89,15 @@ function wait(milliseconds) {
 // See https://plus.codes/ to convert from google maps to lat/long
 async function populatePeople() {
 	const service = services.people;
-	// state.people.bob = await service.create({
-	// 	item: {
-	// 		firstName: 'Bob',
-	// 		lastName: 'Bobson',
-	// 		location: '-26.16,28.08',
-	// 		salary: 123.45,
-	// 		dateOfBirth: new Date('1985-01-01'),
-	// 	},
-	// });
+	state.people.bob = await service.create({
+		item: {
+			firstName: 'Bob',
+			lastName: 'Bobson',
+			location: '-26.16,28.08',
+			salary: 123.45,
+			dateOfBirth: new Date('1985-01-01'),
+		},
+	});
 	await service.refresh();
 }
 

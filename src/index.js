@@ -6,15 +6,16 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const { createAllStaticData } = require('./static-data');
 const baseRouter = require('./express/base-router');
-//const { router: meetingsRouter } = require('./domain/meetings');
-
+const { router: meetingsRouter } = require('./domain/meetings');
+const { router: peopleRouter } = require('./domain/people');
 const app = express();
 app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/', baseRouter);
-//app.use('/meetings', meetingsRouter);
+app.use('/meetings', meetingsRouter);
+app.use('/people', peopleRouter);
 
 app.use(function(req, res) {
 	console.error('Route not found');
