@@ -41,6 +41,9 @@ async function createIndexAndMapping() {
 async function create({ item }) {
 	const _id = generateId(item.name);
 	const suggest = getSuggestions(item);
+	item.attendees = item.attendees.map((attendee) => {
+		return { userId: attendee._id, accepted: true };
+	});
 	return await service.create({ _id, item: { ...item, suggest } });
 }
 
@@ -52,5 +55,9 @@ async function replace({ _id, item }) {
 function getSuggestions(meeting) {
 	let suggestions = [];
 	suggestions = suggestions.concat(tokenizeString(meeting.subject));
+	for (const person of meeting.attendees) {
+		suggestions = suggestions.concat(tokenizeString(person.firstName));
+		suggestions = suggestions.concat(tokenizeString(person.lastName));
+	}
 	return suggestions;
 }

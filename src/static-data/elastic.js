@@ -3,7 +3,7 @@
 const util = require('util');
 const { elasticClient } = require('../elasticsearch');
 const faker = require('faker');
-
+const { cloneDeep } = require('lodash');
 const services = {
 	meetings: require('../domain/meetings/service'),
 	people: require('../domain/people/service'),
@@ -56,8 +56,8 @@ async function createElasticStaticData({ forceDeletion = false } = {}) {
 }
 
 const state = {
-	people: {},
-	meetings: {},
+	people: [],
+	meetings: [],
 };
 
 async function waitForServer(count = 1) {
@@ -100,6 +100,15 @@ function generateFakePerson() {
 	};
 }
 
+// TODO: Isn't fake redundant when referring to meetings?
+function generateFakeMeeting() {
+	return {
+		subject: faker.company.bs(),
+		startDate: faker.date.between('2020-01-01', '2020-04-09'),
+		attendees: state.people.slice(faker.random.number({ min: 1, max: state.people.length })),
+	};
+}
+
 async function populatePeople() {
 	const service = services.people;
 	const promises = [];
@@ -116,5 +125,14 @@ async function populatePeople() {
 
 async function populateMeetings() {
 	const service = services.meetings;
+	const promises = [];
+	for (let index = 0; index < faker.random.number({ min: 10, max: 100 }); index++) {
+		promises.push(
+			service.create({
+				item: generateFakeMeeting(),
+			}),
+		);
+	}
+	state.meetings = await Promise.all(promises);
 	await service.refresh();
 }
